@@ -5,7 +5,7 @@ case class Grid(rows: Int, columns: Int) {
 
   private def prepareGrid: Grid =
     Vector.tabulate(this.rows, this.columns){
-      (i, j) => Cell(i, j, Nil, Nil).getAdjacentCells(this)
+      (i, j) => Cell.placeCell(i, j, this)
     }
 
 }
