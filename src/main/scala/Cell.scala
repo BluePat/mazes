@@ -1,4 +1,6 @@
-case class Cell(row: Int, column: Int, adjacentCells: List[Cell], links: List[Cell]) {
+import scala.math.abs
+
+case class Cell(row: Int, column: Int, adjacentCells: Map[(Int, Int), Cell], links: List[Cell]) {
 
   def link(that: Cell, bidirectional: Boolean = true): Cell = {
     if (bidirectional) that.link(this, bidirectional = false)
@@ -20,15 +22,18 @@ object Cell {
   def placeCell(row: Int, column: Int, grid: Grid): Cell = {
 
     def getNeighbour(i: Int, j: Int): Option[Cell] =
-      if ((0 to grid.rows contains i) && (0 to grid.columns contains j) && (i != j)) Some(grid.layout(i)(j))
+      if ((0 to grid.rows contains i) && (0 to grid.columns contains j)) Some(grid.layout(i)(j))
       else None
 
-    val seqOfAdjacent = for {
+    val seqSurroundings = for {
       i <- row - 1 to row + 1
       j <- column - 1 to column + 1
-    } yield getNeighbour(i, j)
+      if i != abs(j)
+    } yield (i, j) -> getNeighbour(i, j)
 
-    Cell(row, column, seqOfAdjacent.map(_.get).toList, Nil)
+    val mappedAdjacentCells: Map[(Int, Int), Cell] = seqSurroundings.filter(_._2.isDefined).toMap
+
+    Cell(row, column, mappedAdjacentCells , Nil)
   }
 
 }
