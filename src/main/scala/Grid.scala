@@ -5,7 +5,7 @@ case class Grid(rows: Int, columns: Int) {
   type Grid = Vector[Vector[Cell]]
 
   val size: Int = rows * columns
-  val grid: Grid = prepareGrid
+  val layout: Grid = prepareGrid
 
   private def prepareGrid: Grid =
     Vector.tabulate(this.rows, this.columns){
@@ -14,7 +14,7 @@ case class Grid(rows: Int, columns: Int) {
 
   def getRandomCell: Cell = {
     val random = new Random()
-    this.grid(random.nextInt(rows + 1))(random.nextInt(columns + 1))
+    this.layout(random.nextInt(rows))(random.nextInt(columns))
   }
 
 }
