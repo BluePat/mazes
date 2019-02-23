@@ -1,4 +1,4 @@
-case class Cell(row: Int, column: Int, adjacentCells: List[Option[Cell]], links: List[Cell]) {
+case class Cell(row: Int, column: Int, adjacentCells: List[Cell], links: List[Cell]) {
 
   def link(that: Cell, bidirectional: Boolean = true): Cell = {
     if (bidirectional) that.link(this, bidirectional = false)
@@ -28,7 +28,7 @@ object Cell {
       j <- column - 1 to column + 1
     } yield getNeighbour(i, j)
 
-    Cell(row, column, seqOfAdjacent.toList, Nil)
+    Cell(row, column, seqOfAdjacent.map(_.get).toList, Nil)
   }
 
 }
