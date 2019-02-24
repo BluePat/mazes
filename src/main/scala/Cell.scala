@@ -31,7 +31,9 @@ object Cell {
       if i != abs(j)
     } yield (i, j) -> getNeighbour(i, j)
 
-    val mappedAdjacentCells: Map[(Int, Int), Cell] = seqSurroundings.filter(_._2.isDefined).toMap
+    val mappedAdjacentCells: Map[(Int, Int), Cell] = seqSurroundings.toMap map {
+      case (coordinates, Some(value)) => coordinates -> value
+    }
 
     Cell(row, column, mappedAdjacentCells , Nil)
   }
